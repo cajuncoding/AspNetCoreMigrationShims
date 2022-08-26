@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6</TargetFramework>
+    <Nullable>enable</Nullable>
+	  <Description>Library for supporting the migration of legacy applications to AspNetCore providing compatibility shims to aid in minimizing changes and risks for initial migraiton. 
+		  The primary shim provided in v1.0 is a NewtonsoftJsonInputFormatter that provides much closer compatible behavior to the legacy JsonMediaTypeFormatter of Asp .NET Framework MVC.</Description>
+	  <Copyright>Copyright (c) 2018</Copyright>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <Authors>BBernard / CajunCoding</Authors>
+	  <Company>CajunCoding</Company>
+	  <PackageProjectUrl>https://github.com/cajuncoding/AspNetCoreMigrationShims</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/cajuncoding/AspNetCoreMigrationShims</RepositoryUrl>
+	  <PackageTags>asp net mvc core aspnetcore migration upgrade legacy newtonsoft json compatible compatibility inputformatter jsonmediatypeformatter</PackageTags>
+	  <PackageReleaseNotes>
+		  Initial Release
+		  - Provides NewtonsoftJson configuration &amp; behavior for AspNetCore that closely matches the leagacy behavior of the legacy JsonMediaTypeFormatter of Asp .NET Framework MVC.
+
+	  </PackageReleaseNotes>
+	  <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+</Project>
