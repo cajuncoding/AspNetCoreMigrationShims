@@ -38,6 +38,8 @@ namespace AspNetCoreMigrationShims.NewtonsoftJson.NetFrameworkCompatibility
         /// <returns></returns>
         public static MvcNewtonsoftJsonOptions EnableNetFrameworkCompatibility(this MvcNewtonsoftJsonOptions jsonOptions)
         {
+            ArgumentNullException.ThrowIfNull(jsonOptions);
+
             var serializerSettings = jsonOptions.SerializerSettings;
 
             //Enable Compatibility Converters...

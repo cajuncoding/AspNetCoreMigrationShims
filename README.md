@@ -55,3 +55,11 @@ builder.Services
         };
     });
  ```
+
+ Or if you'd rather keep things separated:
+ ```csharp
+builder.Services
+    .AddControllersWithViews(options => {})
+    .AddNewtonsfotJson(options => {}) //Original Newtsonsoft Configuration
+    .WithNewtonsoftJsonNetFrameworkCompatibility(); //Now updated and re-configured for better Compatibility
+ ```
