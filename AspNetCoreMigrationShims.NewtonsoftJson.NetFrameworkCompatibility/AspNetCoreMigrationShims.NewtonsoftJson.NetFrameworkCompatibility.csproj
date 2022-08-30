@@ -13,11 +13,13 @@
 	  <RepositoryUrl>https://github.com/cajuncoding/AspNetCoreMigrationShims</RepositoryUrl>
 	  <PackageTags>asp net mvc core aspnetcore migration upgrade legacy newtonsoft json compatible compatibility inputformatter jsonmediatypeformatter</PackageTags>
 	  <PackageReleaseNotes>
+		  - Add Dependency Injection support for Character ArrayPool so it can be customized and is consistent with Newtonsoft.Json out-of-the-box functionality.
+		  
 		  Initial Release
 		  - Provides NewtonsoftJson configuration &amp; behavior for AspNetCore that closely matches the leagacy behavior of the legacy JsonMediaTypeFormatter of Asp .NET Framework MVC.
 
 	  </PackageReleaseNotes>
-	  <Version>1.0.0</Version>
+	  <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

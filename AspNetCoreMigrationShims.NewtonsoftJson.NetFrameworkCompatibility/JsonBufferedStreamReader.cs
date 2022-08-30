@@ -16,16 +16,17 @@ namespace AspNetCoreMigrationShims.NewtonsoftJson.NetFrameworkCompatibility
 
         public int MemoryThreshold { get; protected set; }
 
-        public JsonTextReader JsonTextReader { get; protected set; }
+        public JsonTextReader JsonTextReader { get; protected set; } = null!;
 
-        protected FileBufferingReadStream FileBufferingReadStream { get; set; }
+        protected FileBufferingReadStream FileBufferingReadStream { get; set; } = null!;
 
         protected TextReader? StreamTextReader { get; set; }
 
         public static async Task<JsonBufferedHttpRequestReader> CreateAsync(
             HttpRequest httpRequest,
             Encoding effectiveEncoding,
-            int memoryThreshold = DefaultMemoryThreshold, 
+            ArrayPool<char> charArrayPool,
+            int memoryThreshold = DefaultMemoryThreshold,
             Func<Stream, Encoding, TextReader>? readerFactory = null
         )
         {
@@ -53,7 +54,7 @@ namespace AspNetCoreMigrationShims.NewtonsoftJson.NetFrameworkCompatibility
             var streamReader = @this.StreamTextReader = streamReaderFactory(bufferingReadStream, effectiveEncoding);
             @this.JsonTextReader = new JsonTextReader(streamReader)
             {
-                ArrayPool = new JsonArrayPoolAdapter(ArrayPool<char>.Shared)
+                ArrayPool = new JsonCharArrayPool(charArrayPool)
             };
 
             return @this;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.ObjectPool;
@@ -8,13 +9,19 @@ namespace AspNetCoreMigrationShims.NewtonsoftJson.NetFrameworkCompatibility
 {
     public class NetFrameworkMvcNewtonsoftJsonCompatibilityPostConfigure : IPostConfigureOptions<MvcOptions>
     {
-        private MvcNewtonsoftJsonOptions _jsonOptions { get; }
-        private ObjectPoolProvider _objectPoolProvider { get; }
+        protected MvcNewtonsoftJsonOptions JsonOptions { get; }
+        protected ObjectPoolProvider ObjectPoolProvider { get; }
+        protected ArrayPool<char> CharArrayPool { get; }
 
-        public NetFrameworkMvcNewtonsoftJsonCompatibilityPostConfigure(IOptions<MvcNewtonsoftJsonOptions> jsonOptions, ObjectPoolProvider objectPoolProvider)
+        public NetFrameworkMvcNewtonsoftJsonCompatibilityPostConfigure(
+            IOptions<MvcNewtonsoftJsonOptions> jsonOptions, 
+            ArrayPool<char> charArrayPool,
+            ObjectPoolProvider objectPoolProvider
+        )
         {
-            _jsonOptions = jsonOptions.Value;
-            _objectPoolProvider = objectPoolProvider;
+            JsonOptions = jsonOptions.Value;
+            ObjectPoolProvider = objectPoolProvider;
+            CharArrayPool = charArrayPool;
         }
 
         public void PostConfigure(string name, MvcOptions mvcOptions)
@@ -25,8 +32,8 @@ namespace AspNetCoreMigrationShims.NewtonsoftJson.NetFrameworkCompatibility
                 throw new ArgumentOutOfRangeException(nameof(mvcOptions.SuppressInputFormatterBuffering),
                     $"Input Formatter Buffering (e.g. MvcOptions.SuppressInputFormatterBuffering) must be enabled to support optimal processing by Newtonsoft.Json Serializers.");
 
-            var jsonSerializerSettings = _jsonOptions.EnableNetFrameworkCompatibility().SerializerSettings;
-            var serializerSettingsPool = _objectPoolProvider.Create(new JsonSerializerObjectPoolPolicy(jsonSerializerSettings));
+            var jsonSerializerSettings = JsonOptions.EnableNetFrameworkCompatibility().SerializerSettings;
+            var serializerSettingsPool = ObjectPoolProvider.Create(new JsonSerializerObjectPoolPolicy(jsonSerializerSettings));
 
             //Configure MVC Input Formatters with dependencies...
             var mvcInputFormatters = mvcOptions.InputFormatters;
@@ -34,8 +41,9 @@ namespace AspNetCoreMigrationShims.NewtonsoftJson.NetFrameworkCompatibility
             //NOTE: We can't Insert at the Beginning because (as noted in the NewtonsoftJson comments) the Patch Formatter
             //          must run first otherwise the Json Input Formatter will handle it's cases!
             mvcInputFormatters.Add(new NetFrameworkMvcCompatibleNewtonsoftJsonInputFormatter(
-                _jsonOptions,
-                serializerSettingsPool
+                JsonOptions,
+                serializerSettingsPool,
+                CharArrayPool
             ));
         }
     }

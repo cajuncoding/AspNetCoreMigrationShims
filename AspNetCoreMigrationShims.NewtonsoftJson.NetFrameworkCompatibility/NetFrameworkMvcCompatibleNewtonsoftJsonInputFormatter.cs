@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Newtonsoft.Json;
@@ -15,13 +16,16 @@ namespace AspNetCoreMigrationShims.NewtonsoftJson.NetFrameworkCompatibility
 
         protected ObjectPool<JsonSerializer> JsonSerializerPool { get; }
 
+        protected ArrayPool<char> CharArrayPool { get; }
+
         public NetFrameworkMvcCompatibleNewtonsoftJsonInputFormatter(
             MvcNewtonsoftJsonOptions jsonOptions,
-            ObjectPool<JsonSerializer> jsonSerializerPool
-        )
+            ObjectPool<JsonSerializer> jsonSerializerPool,
+            ArrayPool<char>? charArrayPool = null)
         {
             JsonOptions = jsonOptions;
             JsonSerializerPool = jsonSerializerPool;
+            CharArrayPool = charArrayPool ?? ArrayPool<char>.Shared;
 
             //Add Supported Encodings
             SupportedEncodings.Add(UTF8EncodingWithoutBOM);
@@ -49,8 +53,9 @@ namespace AspNetCoreMigrationShims.NewtonsoftJson.NetFrameworkCompatibility
             {
                 using var jsonBufferedRequestReader = await JsonBufferedHttpRequestReader.CreateAsync(
                     httpRequest, 
-                    effectiveEncoding, 
-                    JsonOptions.InputFormatterMemoryBufferThreshold, 
+                    effectiveEncoding,
+                    CharArrayPool,
+                    JsonOptions.InputFormatterMemoryBufferThreshold,
                     context.ReaderFactory
                 );
                 
@@ -119,7 +124,7 @@ namespace AspNetCoreMigrationShims.NewtonsoftJson.NetFrameworkCompatibility
             // It's not known that Json.NET currently ever raises error events with exceptions
             // other than these two types, but we're being conservative and limiting which ones
             // we regard as having safe messages to expose to clients
-            if (exception is JsonReaderException || exception is JsonSerializationException)
+            if (exception is JsonReaderException or JsonSerializationException)
             {
                 // InputFormatterException specifies that the message is safe to return to a client, it will
                 // be added to model state.

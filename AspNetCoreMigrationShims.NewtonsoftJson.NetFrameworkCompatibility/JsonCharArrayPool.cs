@@ -4,11 +4,11 @@ using System.Buffers;
 
 namespace AspNetCoreMigrationShims.NewtonsoftJson.NetFrameworkCompatibility
 {
-    public class JsonArrayPoolAdapter : IArrayPool<char>
+    public class JsonCharArrayPool : IArrayPool<char>
     {
         protected ArrayPool<char> CharArrayPool { get; }
         
-        public JsonArrayPoolAdapter(ArrayPool<char> charArrayPool)
+        public JsonCharArrayPool(ArrayPool<char> charArrayPool)
         {
             ArgumentNullException.ThrowIfNull(charArrayPool);
             CharArrayPool = charArrayPool;
