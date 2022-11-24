@@ -10,6 +10,18 @@ The goal here is not to eliminate all possible migration but only to address the
 to migrate all your code to use the new features, new paradigm, new patterns.  And when you encounter issues that simply can't be changed but are blockers
 (e.g. Json Payload structures sent by your Front-end or clients, etc.).
 
+### Available on Nuget here:
+https://www.nuget.org/packages/AspNetCoreMigrationShims.NewtonsoftJson.NetFrameworkCompatibility
+
+### [Buy me a Coffee ☕](https://www.buymeacoffee.com/cajuncoding)
+*I'm happy to share with the community, but if you find this useful (e.g for professional use), and are so inclinded,
+then I do love-me-some-coffee!*
+
+<a href="https://www.buymeacoffee.com/cajuncoding" target="_blank">
+<img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174">
+</a> 
+
+
 ## Release Notes:
  - Provides NewtonsoftJson configuration & behavior for AspNetCore that closely matches the leagacy behavior of the legacy JsonMediaTypeFormatter of Asp .NET Framework MVC.
 
