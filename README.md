@@ -62,7 +62,7 @@ builder.Services
         //You can still customize the Json Serializer Settings just as you would...
         options.SerializerSettings.ContractResolver = new DefaultContractResolver()
         {
-            //In my use case our Models have alot of technical debut and cannot be changed so we cannot enforce any specific Json naming convention!
+            //In my use case our Models have alot (!!!) of technical debt and cannot be changed so we cannot enforce any specific Json naming convention!
             NamingStrategy = new DefaultNamingStrategy();
         };
     });
