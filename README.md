@@ -7,7 +7,7 @@ This is very valuable if you are moving form a legacy code base that may be plag
 need or want to move to .NET6 AspNetCore for all the other awesome benefits it provides.
 
 The goal here is not to eliminate all possible migration but only to address the key elements that cannot be changed as part of the migration.  In general it's best
-to migrate all your code to use the new features, new paradigm, new patterns.  And when you encounter issues that simply can't be changed but are blockers
+to migrate all your code to use the new features, new paradigm, new patterns.  And use compatibility shims when you encounter issues that simply can't be changed but are blockers
 (e.g. Json Payload structures sent by your Front-end or clients, etc.).
 
 ### Available on Nuget here:
